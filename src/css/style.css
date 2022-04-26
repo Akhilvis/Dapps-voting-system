@@ -704,3 +704,9 @@ a:focus {
 }
 
 /* end footer section*/
+
+.label-custom{
+    margin: 0 1%;
+    font-size: 13px;
+    font-weight: 500;
+}
