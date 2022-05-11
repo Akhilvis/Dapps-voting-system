@@ -68,61 +68,26 @@
     <div class="container">
 
       <div class="row">
-        <div class="col-md-6 ">
-            <div class="contact_form-container">
-              <form onSubmit="App.addElectionName(); return false;">
-                <div>
-                  <label>
-                    Election Title
-                    <input type="text" id="ele_title" />
-                  </label>
-                </div>
-                <div><button type="submit" id="add_ele_title">
-                  Add
-                 </button>
-                </div>
-              </form>
-              
-              <form onSubmit="App.addCandidate(); return false;">
-                <div id="cand_add_div">
-                  <label>
-                    Add Candidates
-                    <input id="cand_name" placeholder="Candiates Name" />
-                  </label>
-                  <button type="submit" id="add_cand_btn">
-                    Add+
-                  </button>
-                </div>
-              </form>
-
-
-                <!-- <div>
-                  <label>
-                    Phone Number
-                    <input type="text"  name="candidates"/>
-                  </label>
-                </div>
-
-                <div>
-                  <label>
-                    Message
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                  </label>
-                </div> -->
-                <div class="mt-5 text-center">
-                  <button type="submit">
-                    Upload
-                  </button>
+        <div class="container">
+            <div id="ele_list_container" class="about_card-container">
+              <div class="about_card hide-div">
+                <div class="about-detail">
+                  <div class="about_img-box">
+                    <img src="images/card-img-1.png" alt="">
+                  </div>
+                  <div class="card_detail-ox">
+                    <h4 class="election_name text-center">
+                      
+                    </h4>
+                    <ul class="list-group candidates-names">
+                    </ul>
+                    <!-- <div class="contact_form-container text-center"><button>Vote</button></div> -->
+                    <div class="text-center vote-link"></div>
+                  </div>
                 </div>
               </div>
             </div>
-          </form>
-        </div>
-        <div class="col-md-6">
-          <div class="contact_img-box">
-            <img src="images/form-img.png" alt="">
           </div>
-        </div>
       </div>
     </div>
   </section>

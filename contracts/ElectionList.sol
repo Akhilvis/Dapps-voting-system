@@ -19,34 +19,40 @@ contract ElectionList {
         uint num_of_votes;
     }
 
+    event electionSetup(
+        uint id,
+        string election_title,
+        bool completed
+    );
+
+    event addCandidate(
+        uint id,
+        string cand_name,
+        uint num_votes
+    );
+
+
     mapping(uint => ElectionDetail) public elections;
     mapping(uint => CandidatesDetail) public candidates;
 
 
     constructor() public{
 
-     candis = ["amal","arun","akhil"];
-     createElection("CUSAT COLLEGE ELECTION", candis);   
+     candis = ["archana", "amala"];
+     createElectionTitle("SCMS COLLEGE ELECTION");   
 
     }
 
-    function createElection(string memory _title, string[] memory _cands) public{
+    function createElectionTitle(string memory _title) public{
         electionCount++;
         elections[electionCount] = ElectionDetail(electionCount, _title, false);
-        for (uint i=0; i<_cands.length; i++) {
-            candidatesCount++;
-            candidates[candidatesCount] = CandidatesDetail(electionCount,_cands[i],0);
-        }
-
-        // emit TaskCreated(taskCount, _content, false);
+        emit electionSetup(electionCount, _title, true);
      }
 
-    // function toggleCompleted(uint _id) public {
-    //     Task memory _task = tasks[_id];
-    //     _task.completed = !_task.completed;
-    //     tasks[_id] = _task;
-    //     emit TaskCompleted(_id, _task.completed);
-    // }
-
+    function addCandidates(uint _electionid, string memory _cand_name) public{
+            candidatesCount++;
+            candidates[candidatesCount] = CandidatesDetail(_electionid,_cand_name,0);
+            emit addCandidate(candidatesCount, _cand_name, 0);
+     }
 
 }

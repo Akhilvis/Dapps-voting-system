@@ -414,7 +414,7 @@ a:focus {
 
 .about_card .about-detail {
   padding: 2px 25px 35px 25px;
-  height: 420px;
+  /* height: 420px; */
   -webkit-box-shadow: -1px 0px 25px 9px rgba(0, 0, 0, 0.09);
   -moz-box-shadow: -1px 0px 25px 9px rgba(0, 0, 0, 0.09);
   box-shadow: -1px 0px 25px 9px rgba(0, 0, 0, 0.09);
@@ -709,4 +709,10 @@ a:focus {
     margin: 0 1%;
     font-size: 13px;
     font-weight: 500;
+}
+.show-div{
+  display: block;
+}
+.hide-div{
+  display: none;
 }

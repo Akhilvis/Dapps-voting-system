@@ -16,6 +16,7 @@ App = {
     contracts: {},
 	candidates_list: [],
     loading: false,
+	electionCount : 0 ,
 
 
 	load: async () =>{
@@ -25,6 +26,7 @@ App = {
         await App.loadAccount()
         await App.loadContract()
         await App.render()
+		await App.renderTasks()
 
       },
 
@@ -98,15 +100,73 @@ App = {
         // App.setLoading(false)
     },
 
-	setupElection: async () =>{
-        // App.setLoading(true)
-		const election_title = $('#ele_title').val()
-		console.log(election_title)
+	renderTasks: async () => {
+		// Load the total task count from the blockchain
+		electionCount = await App.electionList.electionCount()
+		const candidatesCount = await App.electionList.candidatesCount()
 
-        await App.electionList.createElection(election_title, App.candidates_list)
-        window.location.reload()
+		console.log("electionCount ........    ", electionCount.toNumber())
+		console.log("candidatesCount ........    ", candidatesCount.toNumber())
 
-    },
+		const $taskTemplate = $('.about_card')
+	
+		// Render out each task with a new task template
+		for (var i = 1; i <= electionCount; i++) {
+		  // Fetch the task data from the blockchain
+		  const election = await App.electionList.elections(i)
+		  console.log('>>>>> election names >>>>>>   ', election[1])
+		  const electionId = election[0].toNumber()
+
+		
+			  // Create the html for the task
+			  const $newTaskTemplate = $taskTemplate.clone()
+
+			  $newTaskTemplate.removeClass("hide-div")
+			  $newTaskTemplate.find('.election_name').html(election[1])
+			  $newTaskTemplate.find('.vote-link').append('<a href="./vote.html/22">Vote</a>');
+
+			  for (var j = 1; j <= candidatesCount; j++) {
+				// Fetch the task data from the blockchain
+				const cands = await App.electionList.candidates(j)
+				console.log('>>>>> candidates names >>>>>>   ',cands[0].toNumber(),  cands[1])
+				if(cands[0].toNumber() == electionId){
+					let cand_name = cands[1]
+					let num_of_votes = cands[2]
+					let cand_ele = '<li class="list-group-item">'+cand_name +'<span class="badge">'+num_of_votes+'</span></li>'
+					$newTaskTemplate.find('.candidates-names').append(cand_ele)
+
+				}
+	
+			}
+			 
+			  $('#ele_list_container').append($newTaskTemplate)
+
+		
+		
+
+		}
+
+
+
+	  },
+
+		addElectionName: async () =>{
+			// App.setLoading(true)
+			const election_title = $('#ele_title').val()
+
+			await App.electionList.createElectionTitle(election_title)
+			// window.location.reload()
+
+		},
+		addCandidate: async () =>{
+			const election_id = electionCount.toNumber()+1
+			const cand_name = $('#cand_name').val()
+
+			console.log("election count in fun .... ", election_id)
+			console.log("Candidates name .... ", cand_name)
+			await App.electionList.addCandidates(election_id, cand_name)
+
+		}
 	
 }
 
