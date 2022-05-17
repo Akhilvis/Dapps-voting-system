@@ -2,7 +2,6 @@
 
 $(document).ready(function() {
 	$('#add_cand_btn').click(function() {
-		$("#cand_add_div").append("<span class='label label-success label-custom'>"+ $('#add_cand').val() +"</span>");
 		App.candidates_list.push($('#add_cand').val())
 		$('#add_cand').val("")
 	});
@@ -27,6 +26,7 @@ App = {
         await App.loadContract()
         await App.render()
 		await App.renderTasks()
+		await App.loadElectionDetails()
 
       },
 
@@ -78,6 +78,7 @@ App = {
 
       // Hydrate the smart contract with values from the blockchain
       App.electionList = await App.contracts.ElectionList.deployed()
+	  console.log("loaded>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>")
     },
 	
     render: async() =>{
@@ -123,15 +124,15 @@ App = {
 
 			  $newTaskTemplate.removeClass("hide-div")
 			  $newTaskTemplate.find('.election_name').html(election[1])
-			  $newTaskTemplate.find('.vote-link').append('<a href="./vote.html/22">Vote</a>');
+			  $newTaskTemplate.find('.vote-link').append('<a href="./vote.html?electionid='+electionId+'">Vote</a>');
 
 			  for (var j = 1; j <= candidatesCount; j++) {
 				// Fetch the task data from the blockchain
 				const cands = await App.electionList.candidates(j)
-				console.log('>>>>> candidates names >>>>>>   ',cands[0].toNumber(),  cands[1])
-				if(cands[0].toNumber() == electionId){
-					let cand_name = cands[1]
-					let num_of_votes = cands[2]
+				console.log('>>>>> candidates names <<<<<<>>>>>>   ',cands[0].toNumber(),  cands[1].toNumber(), cands[2])
+				if(cands[1].toNumber() == electionId){
+					let cand_name = cands[2]
+					let num_of_votes = cands[3]
 					let cand_ele = '<li class="list-group-item">'+cand_name +'<span class="badge">'+num_of_votes+'</span></li>'
 					$newTaskTemplate.find('.candidates-names').append(cand_ele)
 
@@ -141,32 +142,57 @@ App = {
 			 
 			  $('#ele_list_container').append($newTaskTemplate)
 
-		
-		
-
 		}
-
-
 
 	  },
 
 		addElectionName: async () =>{
 			// App.setLoading(true)
 			const election_title = $('#ele_title').val()
-
 			await App.electionList.createElectionTitle(election_title)
-			// window.location.reload()
+			document.getElementById("ele_title").disabled = true;
+			document.getElementById('add_ele_title').style.visibility='hidden';
 
 		},
+
 		addCandidate: async () =>{
 			const election_id = electionCount.toNumber()+1
 			const cand_name = $('#cand_name').val()
-
-			console.log("election count in fun .... ", election_id)
-			console.log("Candidates name .... ", cand_name)
 			await App.electionList.addCandidates(election_id, cand_name)
+			$("#cand_add_div").append("<span class='label label-success label-custom'>"+ cand_name +"</span>");
+
+		},
+
+		candSelected: async(cand_id) =>{
+			await App.electionList.voteCandidate(cand_id)
+		},
+		
+		loadElectionDetails: async () =>{
+
+				const queryString = window.location.search;
+				const urlParams = new URLSearchParams(queryString);
+				const electionId = urlParams.get('electionid')
+				const candidatesCount = await App.electionList.candidatesCount()
+
+				console.log(candidatesCount.toNumber())
+				for(i=1;i<=candidatesCount;i++){
+					const cands = await App.electionList.candidates(i)
+
+					console.log('>>>>> candidates names .....>>>>>>   ',cands[0].toNumber(),  cands[1].toNumber(), cands[2])
+
+					if(cands[1].toNumber() == electionId){
+						let cand_name = cands[2]
+						let num_of_votes = cands[3]
+						let cand_ele = '<button id="cand_'+cands[0]+'" type="button" class="btn btn-primary btn-lg btn-block">'+cands[2]+'</button>'
+						$('.candidates-names-vote').append(cand_ele)
+						var vote_btn = document.getElementById("cand_"+cands[0]);
+						vote_btn.setAttribute('onclick', 'App.candSelected( " '+cands[0]+' " )');
+
+					}
+			}
 
 		}
+
 	
 }
 

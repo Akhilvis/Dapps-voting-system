@@ -62,7 +62,7 @@
         Don’t Hesitate To Ask
       </p> -->
       <h2 class="">
-        SETUP ELECTION
+        VOTE
       </h2>
     </div>
     <div class="container">
@@ -70,59 +70,13 @@
       <div class="row">
         <div class="col-md-6 ">
             <div class="contact_form-container">
-              <form onSubmit="App.addElectionName(); return false;">
-                <div>
-                  <label>
-                    Election Title
-                    <input type="text" id="ele_title" />
-                  </label>
-                </div>
-                <div><button type="submit" id="add_ele_title">
-                  Add
-                 </button>
-                </div>
-              </form>
-              
-              <form onSubmit="App.addCandidate(); return false;">
-                <div id="cand_add_div">
-                  <label>
-                    Add Candidates
-                    <input id="cand_name" placeholder="Candiates Name" />
-                  </label>
-                  <button type="submit" id="add_cand_btn">
-                    Add+
-                  </button>
-                </div>
-              </form>
-
-
-                <!-- <div>
-                  <label>
-                    Phone Number
-                    <input type="text"  name="candidates"/>
-                  </label>
-                </div>
-
-                <div>
-                  <label>
-                    Message
-                    <textarea name="" id="" cols="30" rows="10"></textarea>
-                  </label>
-                </div> -->
-                <div class="mt-5 text-center">
-                  <button type="submit">
-                    Upload
-                  </button>
+                <di<v class="mt-5 text-center candidates-names-vote">
                 </div>
               </div>
             </div>
           </form>
         </div>
-        <div class="col-md-6">
-          <div class="contact_img-box">
-            <img src="images/form-img.png" alt="">
-          </div>
-        </div>
+        <div class="contact_form-container text-center"><button>Submit Vote</button></div>
       </div>
     </div>
   </section>
@@ -155,8 +109,9 @@
       document.getElementById("myNav").classList.toggle("menu_width")
       document.querySelector(".custom_menu-btn").classList.toggle("menu_btn-style")
     }
-  </script>
 
+    App.loadElectionDetails()
+</script>
 
 </body>
 

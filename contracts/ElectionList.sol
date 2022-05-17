@@ -14,6 +14,7 @@ contract ElectionList {
     }
 
     struct CandidatesDetail {
+        uint id;
         uint election_id;
         string name;
         uint num_of_votes;
@@ -30,6 +31,10 @@ contract ElectionList {
         string cand_name,
         uint num_votes
     );
+    event VoteCompleted(
+        uint id,
+        uint vote_count
+    );
 
 
     mapping(uint => ElectionDetail) public elections;
@@ -38,9 +43,10 @@ contract ElectionList {
 
     constructor() public{
 
-     candis = ["archana", "amala"];
-     createElectionTitle("SCMS COLLEGE ELECTION");   
-
+    //  candis = ["archana", "amala"];
+    //  createElectionTitle("SCMS COLLEGE ELECTION");
+    //  createElectionTitle("SCMS COLLEGE ELECTION");   
+   
     }
 
     function createElectionTitle(string memory _title) public{
@@ -51,8 +57,17 @@ contract ElectionList {
 
     function addCandidates(uint _electionid, string memory _cand_name) public{
             candidatesCount++;
-            candidates[candidatesCount] = CandidatesDetail(_electionid,_cand_name,0);
+            candidates[candidatesCount] = CandidatesDetail(candidatesCount, _electionid,_cand_name,0);
             emit addCandidate(candidatesCount, _cand_name, 0);
+     }
+
+     function voteCandidate(uint _candidateid) public{
+        CandidatesDetail memory _candidate = candidates[_candidateid];
+        uint _vote_count = _candidate.num_of_votes;
+        _vote_count++;
+        _candidate.num_of_votes = _vote_count;
+        candidates[_candidateid] = _candidate;
+        emit VoteCompleted(_candidateid, _vote_count);
      }
 
 }
